@@ -1887,11 +1887,6 @@ function renderResult(){
         <div class="quiz-result-quote-text">${meta.quote}</div>
         <div class="quiz-result-quote-author">— ${meta.author}</div>
       </div>
-      <div class="quiz-result-divider"></div>
-      <div class="quiz-result-section">
-        <div class="quiz-result-label">для моих</div>
-        <div class="quiz-result-value">${addrText}</div>
-      </div>
     </div>
     <div class="quiz-result-actions">
       <button class="btn-primary" onclick="goToVideoAndPlay()">Подробнее о Коде Мышления →</button>
@@ -1903,12 +1898,27 @@ function goToVideoAndPlay(){
   closeQuiz();
   setTimeout(()=>{
     const card=document.getElementById('founderVideoCard');
+    const video=card?card.querySelector('video'):null;
     if(card){
       // Центрируем карточку видео в окне браузера
       const rect=card.getBoundingClientRect();
       const targetY=window.scrollY+rect.top-(window.innerHeight-rect.height)/2;
       window.scrollTo({top:Math.max(0,targetY),behavior:'smooth'});
     }
+    // После окончания скролла — перематываем на 0 и запускаем со звуком
+    setTimeout(()=>{
+      if(!video)return;
+      try{
+        video.currentTime=0;
+        video.muted=false;
+        video.volume=1;
+        const p=video.play();
+        if(p&&p.catch){
+          // Если браузер блокирует autoplay со звуком — стартуем тихо
+          p.catch(()=>{video.muted=true;video.play().catch(()=>{})});
+        }
+      }catch(e){}
+    },900);
   },200);
 }
 
