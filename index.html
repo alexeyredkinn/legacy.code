@@ -270,7 +270,22 @@ section{position:relative;padding:96px 24px 80px;overflow:hidden}
 .about-deliverable{margin-top:28px;color:var(--text);font-size:17px;line-height:1.55;max-width:520px}
 @media(min-width:1024px){.about-deliverable{font-size:19px;margin-top:36px}}
 .book-block{margin-top:56px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px}
-.book-img-wrap{position:relative;max-width:340px;width:100%;border-radius:8px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4),0 0 0 .5px rgba(232,185,127,.08);transition:transform .4s ease}
+.book-img-wrap{position:relative;max-width:340px;width:100%;border-radius:8px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4),0 0 0 .5px rgba(232,185,127,.08);transition:transform .4s ease;border:0;padding:0;background:transparent}
+.book-img-zoomable{cursor:zoom-in;display:block}
+.book-img-zoomable:focus-visible{outline:2px solid var(--gold);outline-offset:6px}
+.book-img-zoom-hint{position:absolute;top:14px;right:14px;background:rgba(8,15,31,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:var(--text);font-family:'Inter Tight',sans-serif;font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:6px 12px;border-radius:100px;border:.5px solid rgba(232,185,127,.3);opacity:0;transform:translateY(-6px);transition:opacity .3s ease,transform .3s ease;pointer-events:none;z-index:2}
+.book-img-zoomable:hover .book-img-zoom-hint,.book-img-zoomable:focus-visible .book-img-zoom-hint{opacity:1;transform:translateY(0)}
+@media(max-width:767px){.book-img-zoom-hint{opacity:1;transform:translateY(0);font-size:10px;padding:5px 10px}}
+
+/* Lightbox overlay */
+.lightbox{position:fixed;inset:0;background:rgba(8,15,31,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .3s ease}
+.lightbox.open{opacity:1;pointer-events:auto}
+.lightbox-img{max-width:100%;max-height:100%;width:auto;height:auto;border-radius:8px;box-shadow:0 40px 100px rgba(0,0,0,.7);transform:scale(.96);transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.lightbox.open .lightbox-img{transform:scale(1)}
+.lightbox-close{position:absolute;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:rgba(20,33,58,.7);border:.5px solid rgba(232,185,127,.3);color:var(--text);font-family:'Cormorant Garamond',serif;font-weight:300;font-size:28px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:border-color .25s ease,background .25s ease}
+.lightbox-close:hover{border-color:var(--gold);background:rgba(20,33,58,.9)}
+.lightbox-close:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+@media(min-width:1024px){.lightbox{padding:48px}.lightbox-close{top:28px;right:28px;width:52px;height:52px;font-size:32px}}
 @media(min-width:1024px){.book-img-wrap{max-width:520px;transform:rotate(-2deg)}.book-img-wrap:hover{transform:rotate(0deg) scale(1.02)}}
 @media(min-width:1280px){.book-img-wrap{max-width:580px}}
 .book-img-wrap::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 40% at 50% 20%,rgba(232,185,127,.12),transparent 60%)}
@@ -710,6 +725,12 @@ body.has-sticky-cta{padding-bottom:80px}
 <!-- COSMIC CONSTELLATIONS BACKGROUND -->
 <canvas id="cosmosCanvas" class="cosmos-canvas" aria-hidden="true"></canvas>
 
+<!-- LIGHTBOX (для увеличенного просмотра изображений) -->
+<div class="lightbox" id="imageLightbox" role="dialog" aria-modal="true" aria-label="Просмотр изображения" onclick="closeImageLightbox(event)">
+  <button type="button" class="lightbox-close" onclick="closeImageLightbox(event)" aria-label="Закрыть">×</button>
+  <img class="lightbox-img" id="imageLightboxImg" src="" alt="">
+</div>
+
 <!-- SCROLL PROGRESS -->
 <div class="scroll-progress" aria-hidden="true"><div class="scroll-progress-bar" id="scrollProgressBar"></div></div>
 
@@ -793,9 +814,10 @@ body.has-sticky-cta{padding-bottom:80px}
         <p class="body-italic about-deliverable">На выходе — брендированная книга с вашим Кодом Мышления. Более 100 страниц, структурированных по 10 главам. В цифровом или печатном формате — по&nbsp;вашему выбору.</p>
       </div>
       <div class="about-book">
-        <div class="book-img-wrap">
-          <img src="https://d8j0ntlcm91z4.cloudfront.net/user_36zgFZCQ9jQ2zcfJ2AxNIZHQoho/hf_20260513_122433_4d4953e7-2a74-4099-b0bd-cd42129dddd0.png" alt="PDF-книга «Код Мышления» на iPad, крупный план">
-        </div>
+        <button type="button" class="book-img-wrap book-img-zoomable" onclick="openImageLightbox('./assets/book-on-phone.jpg', 'PDF-книга «Код Мышления» на телефоне')" aria-label="Открыть увеличенный просмотр">
+          <img src="./assets/book-on-phone.jpg" alt="PDF-книга «Код Мышления» на телефоне, крупный план">
+          <span class="book-img-zoom-hint" aria-hidden="true">Открыть</span>
+        </button>
       </div>
     </div>
 
@@ -1803,6 +1825,35 @@ function toggleFaq(btn){
   item.classList.toggle('open');
   btn.setAttribute('aria-expanded', isOpen?'false':'true');
 }
+
+/* IMAGE LIGHTBOX — клик по картинке открывает в полный экран */
+function openImageLightbox(src,alt){
+  const lb=document.getElementById('imageLightbox');
+  const img=document.getElementById('imageLightboxImg');
+  if(!lb||!img)return;
+  img.src=src;
+  img.alt=alt||'';
+  lb.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeImageLightbox(e){
+  // Если клик по самой картинке (не по фону или кнопке) — не закрываем
+  if(e&&e.target&&e.target.tagName==='IMG')return;
+  const lb=document.getElementById('imageLightbox');
+  if(!lb)return;
+  lb.classList.remove('open');
+  document.body.style.overflow='';
+}
+// ESC — закрытие
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    const lb=document.getElementById('imageLightbox');
+    if(lb&&lb.classList.contains('open')){
+      lb.classList.remove('open');
+      document.body.style.overflow='';
+    }
+  }
+});
 
 /* Methodology cards — раскрытие исследований и принципов по клику */
 function toggleCard(card){
