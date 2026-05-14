@@ -461,7 +461,8 @@ section{position:relative;padding:96px 24px 80px;overflow:hidden}
 @media(min-width:1024px){.tier-img,.tier-video{height:180px}}
 .tier-card.tier-featured .tier-img,.tier-card.tier-featured .tier-video{box-shadow:0 20px 50px rgba(0,0,0,.5),0 0 0 .5px rgba(232,185,127,.12)}
 
-.tier-meta{font-family:'Inter Tight',sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;opacity:.85}
+.tier-meta{font-family:'Inter Tight',sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;opacity:.85;margin-top:8px}
+@media(min-width:1024px){.tier-meta{margin-top:14px}}
 
 .tier-name{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:28px;line-height:1.1;letter-spacing:-.012em;color:var(--text);margin-bottom:8px}
 @media(min-width:1024px){.tier-name{font-size:36px}}
@@ -490,6 +491,30 @@ section{position:relative;padding:96px 24px 80px;overflow:hidden}
 .tier-gift-link{font-family:'Inter Tight',sans-serif;font-size:13px;color:var(--gold);text-decoration:none;border-bottom:.5px solid rgba(212,166,110,.4);padding-bottom:1px;transition:border-color .2s ease,color .2s ease}
 .tier-gift-link:hover{color:var(--gold-light);border-bottom-color:var(--gold)}
 @media(min-width:1024px){.tier-gift-link{font-size:14px}}
+
+/* ===== RESULT GALLERY (после цены, итог программы) ===== */
+.result-grid{display:grid;grid-template-columns:1fr;gap:32px;margin-top:48px}
+@media(min-width:768px){.result-grid{grid-template-columns:repeat(2,1fr);gap:24px;margin-top:56px}}
+@media(min-width:1024px){.result-grid{gap:32px;margin-top:72px}}
+
+.result-card{margin:0;display:flex;flex-direction:column;background:linear-gradient(180deg,rgba(20,33,58,.5) 0%,rgba(14,27,48,.4) 100%);border:.5px solid rgba(212,166,110,.18);border-radius:18px;overflow:hidden;transition:border-color .35s ease,transform .35s ease}
+@media(min-width:1024px){.result-card{border-radius:22px}}
+.result-card:hover{border-color:rgba(212,166,110,.5);transform:translateY(-4px)}
+.result-card-featured{border-color:rgba(212,166,110,.4);background:linear-gradient(180deg,rgba(232,185,127,.04) 0%,rgba(20,33,58,.55) 50%,rgba(14,27,48,.45) 100%);box-shadow:0 30px 80px rgba(0,0,0,.35),0 0 0 .5px rgba(232,185,127,.1)}
+
+.result-img-wrap{position:relative;width:100%;aspect-ratio:4/5;overflow:hidden;background:#0E1B30}
+@media(min-width:768px){.result-img-wrap{aspect-ratio:1/1}}
+@media(min-width:1024px){.result-img-wrap{aspect-ratio:4/5}}
+.result-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.result-card:hover .result-img{transform:scale(1.03)}
+
+.result-caption{padding:24px 24px 28px;text-align:left}
+@media(min-width:1024px){.result-caption{padding:32px 32px 36px}}
+.result-meta{font-family:'Inter Tight',sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);opacity:.85;margin-bottom:8px}
+.result-name{font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;font-size:32px;line-height:1.1;letter-spacing:-.015em;color:var(--text);margin-bottom:14px}
+@media(min-width:1024px){.result-name{font-size:42px;margin-bottom:18px}}
+.result-desc{font-family:'Inter Tight',sans-serif;font-size:14px;line-height:1.6;color:var(--body);text-wrap:pretty;hyphens:auto;-webkit-hyphens:auto}
+@media(min-width:1024px){.result-desc{font-size:15px;line-height:1.65}}
 .cta-stack{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:36px}
 .cta-stack .btn-primary{min-width:280px}
 .gift-link{font-family:'Inter Tight',sans-serif;font-size:13px;color:var(--gold);text-decoration:underline;text-underline-offset:4px}
@@ -814,10 +839,9 @@ body.has-sticky-cta{padding-bottom:80px}
         <p class="body-italic about-deliverable">На выходе — брендированная книга с вашим Кодом Мышления. Более 100 страниц, структурированных по 10 главам. В цифровом или печатном формате — по&nbsp;вашему выбору.</p>
       </div>
       <div class="about-book">
-        <button type="button" class="book-img-wrap book-img-zoomable" onclick="openImageLightbox('./assets/book-on-phone.jpg', 'PDF-книга «Код Мышления» на телефоне')" aria-label="Открыть увеличенный просмотр">
-          <img src="./assets/book-on-phone.jpg" alt="PDF-книга «Код Мышления» на телефоне, крупный план">
-          <span class="book-img-zoom-hint" aria-hidden="true">Открыть</span>
-        </button>
+        <div class="book-img-wrap">
+          <img src="./assets/result-pdf.jpg" alt="Брендированная книга «Код Мышления» — PDF на iPad с распечатанными листами">
+        </div>
       </div>
     </div>
 
@@ -1079,9 +1103,6 @@ body.has-sticky-cta{padding-bottom:80px}
 
       <!-- TIER 1: PDF -->
       <div class="tier-card">
-        <div class="tier-img-wrap">
-          <img class="tier-img" src="https://d8j0ntlcm91z4.cloudfront.net/user_36zgFZCQ9jQ2zcfJ2AxNIZHQoho/hf_20260513_122433_4d4953e7-2a74-4099-b0bd-cd42129dddd0.png" alt="PDF-книга «Код Мышления» на iPad">
-        </div>
         <div class="tier-meta">Тариф · 01</div>
         <div class="tier-name">PDF-книга</div>
         <p class="tier-subtitle">Цифровое издание вашего Кода Мышления</p>
@@ -1107,11 +1128,6 @@ body.has-sticky-cta{padding-bottom:80px}
       <!-- TIER 2: Printed Book (single edition) -->
       <div class="tier-card tier-featured">
         <div class="tier-badge">Премиальное издание</div>
-        <div class="tier-img-wrap">
-          <video class="tier-img tier-video" autoplay loop muted playsinline preload="metadata" aria-label="Премиум-издание книги «Код Мышления» в фирменном переплёте">
-            <source src="./assets/tier2-printed-book.mp4" type="video/mp4">
-          </video>
-        </div>
         <div class="tier-meta">Тариф · 02</div>
         <div class="tier-name">Код Мышления + Печатная книга</div>
         <p class="tier-subtitle">В индивидуальном печатном издании — единственный экземпляр с&nbsp;вашим именем</p>
@@ -1141,6 +1157,38 @@ body.has-sticky-cta{padding-bottom:80px}
 </section>
 
 <!-- SECTION — CONDITIONS (visualized) -->
+<!-- SECTION — RESULT GALLERY (after #price) -->
+<section id="result-gallery" style="background:#0B1626">
+  <div class="container">
+    <h2 class="h2">Итог программы — <span class="italic-gold">в&nbsp;вашем тарифе</span></h2>
+    <p class="body-lg" style="margin-top:20px;max-width:620px">Один и тот же Код Мышления — два формата итогового артефакта. Цифровой, который всегда с&nbsp;вами на&nbsp;любом устройстве. И&nbsp;физический, который вы оставите детям и внукам как наследие.</p>
+
+    <div class="result-grid">
+      <figure class="result-card">
+        <div class="result-img-wrap">
+          <img class="result-img" src="./assets/result-pdf.jpg" alt="«Код Мышления» — PDF на iPad с распечатанными листами рядом">
+        </div>
+        <figcaption class="result-caption">
+          <div class="result-meta">Тариф · 01</div>
+          <div class="result-name">PDF-книга</div>
+          <p class="result-desc">Брендированное цифровое издание, более 100 страниц по 10 главам. Открывается на любом устройстве — телефон, планшет, компьютер. При желании распечатывается на обычном принтере.</p>
+        </figcaption>
+      </figure>
+
+      <figure class="result-card result-card-featured">
+        <div class="result-img-wrap">
+          <img class="result-img" src="./assets/result-printed.jpg" alt="«Код Мышления» — премиум-издание в фирменном переплёте, ограниченный тираж 001/100">
+        </div>
+        <figcaption class="result-caption">
+          <div class="result-meta">Тариф · 02</div>
+          <div class="result-name">Печатное издание</div>
+          <p class="result-desc">Индивидуальное физическое издание — единственный экземпляр с&nbsp;вашим именем. Фирменный переплёт, кремовая бумага, золотое тиснение. Отправка по&nbsp;РФ и&nbsp;СНГ в&nbsp;течение 45&nbsp;дней.</p>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
 <section id="conditions">
   <div class="container">
     <h2 class="h2">Старт <span class="italic-gold">1 июня 2026</span></h2>
@@ -1378,7 +1426,8 @@ else if(localStorage.getItem('cookie_consent')==='false'){document.getElementByI
     {sel:'.research-grid > *',step:140},
     {sel:'.principles-grid > *',step:110},
     {sel:'.proof-strip > *',step:90},
-    {sel:'.pricing-grid > *',step:160}
+    {sel:'.pricing-grid > *',step:160},
+    {sel:'.result-grid > *',step:180}
   ];
   GRIDS.forEach(g=>{
     document.querySelectorAll(g.sel).forEach((el,i)=>{
